@@ -47,7 +47,12 @@ app.use(
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:4200"]
+  })
+);
 
 // Enable authentication using session + passport
 app.use(
@@ -61,6 +66,6 @@ app.use(
 require("./passport")(app);
 
 const authRoutes = require("./routes/auth");
-app.use("/auth", authRoutes);
+app.use("/api", authRoutes);
 
 module.exports = app;

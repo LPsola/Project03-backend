@@ -7,28 +7,43 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
-authRoutes.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/auth/login",
-    failureFlash: true,
-    passReqToCallback: true
-  })
-);
+authRoutes.post("/login", (req, res, next) => {
+  const myFunction = passport.authenticate("local", (err, theUser) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    if (!theUser) {
+      const err = new Error("Log in failed!");
+      err.status = 400;
+      next(err);
+      return;
+    }
+    req.login(theUser, () => {
+      theUser.password = undefined;
+      res.json({ userInfo: theUser });
+    });
+  });
+  myFunction(req, res, next);
+});
 
 authRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
   const rol = req.body.role;
   if (username === "" || password === "") {
-    res.render("auth/signup", { message: "Indicate username and password" });
+    const err = new Error("Username or Password is invalid");
+    err.status = 400;
+    next(err);
     return;
   }
 
   User.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
-      res.render("auth/signup", { message: "The username already exists" });
+      const err = new Error("The username already exists");
+      err.status = 400;
+      next(err);
       return;
     }
 
@@ -37,15 +52,16 @@ authRoutes.post("/signup", (req, res, next) => {
 
     const newUser = new User({
       username,
-      password: hashPass,
-      role: "teacher"
+      password: hashPass
     });
 
     newUser.save(err => {
       if (err) {
-        res.render("auth/signup", { message: "Something went wrong" });
+        next(err);
       } else {
-        res.redirect("/");
+        req.login(newUser, () => {});
+        newUser.password = undefined;
+        res.json({ userInfo: newUser });
       }
     });
   });
@@ -53,7 +69,14 @@ authRoutes.post("/signup", (req, res, next) => {
 
 authRoutes.get("/logout", (req, res) => {
   req.logout();
-  res.redirect("/");
+  res.json({ userInfo: null });
+});
+
+authRoutes.get("/checklogin", (req, res, next) => {
+  if (req.user) {
+    req.user.password = undefined;
+  }
+  res.json({ userInfo: req.user });
 });
 
 module.exports = authRoutes;
