@@ -68,4 +68,7 @@ require("./passport")(app);
 const authRoutes = require("./routes/auth");
 app.use("/api", authRoutes);
 
+const projectRouter = require( "./routes/projects-api-router" );
+app.use( "/api", projectRouter );
+
 module.exports = app;
