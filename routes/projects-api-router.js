@@ -10,8 +10,8 @@ const router = express.Router();
 
 
 
-// GET api/projects
-// ----------------
+// GET PROJECTS LIST
+// -----------------
 router.get( "projects", ( req, res, next ) => {
     Project.find()
         .then(( projects ) => {
@@ -24,8 +24,8 @@ router.get( "projects", ( req, res, next ) => {
 
 
 
-// POST api/projects
-// -----------------
+// POST NEW PROJECT
+// ----------------
 router.post( "projects", ( req, res, next ) => {
     const { ownerId, gitHubUrl, trelloBoardId, slackId, slackUserId, usersArray, activityFeed } = req.body;
 
@@ -40,8 +40,8 @@ router.post( "projects", ( req, res, next ) => {
 
 
 
-// GET api/project/projectId
-// -------------------------
+// GET ONE PROJECT
+// ---------------
 router.get( "project/:projectId", ( req, res, next ) => {
     if( !mongoose.Types.ObjectId.isValid( req.params.projectId )) {
         next();
@@ -63,8 +63,8 @@ router.get( "project/:projectId", ( req, res, next ) => {
 
 
 
-// PUT api/project/projectId
-// DELETE api/project/projectId
+// PUT ONE PROJECT
+// DELETE ONE PROJECT
 
 
 
@@ -74,6 +74,6 @@ router.get( "project/:projectId", ( req, res, next ) => {
 
 
 
-// -----------------------
+// --------------------------------------------------
 
 module.exports = router;

@@ -7,6 +7,16 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
+
+
+// --------------------------------------------------
+// ROUTES HERE
+// --------------------------------------------------
+
+
+
+// LOGIN
+// ----------------
 authRoutes.post("/login", (req, res, next) => {
   const myFunction = passport.authenticate("local", (err, theUser) => {
     if (err) {
@@ -28,6 +38,10 @@ authRoutes.post("/login", (req, res, next) => {
   myFunction(req, res, next);
 });
 
+
+
+// SIGNUP
+// ----------------
 authRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -67,16 +81,28 @@ authRoutes.post("/signup", (req, res, next) => {
   });
 });
 
+
+
+// LOGOUT
+// ----------------
 authRoutes.get("/logout", (req, res) => {
   req.logout();
   res.json({ userInfo: null });
 });
 
+
+
+// CHECK LOGIN
+// ----------------
 authRoutes.get("/checklogin", (req, res, next) => {
   if (req.user) {
     req.user.password = undefined;
   }
   res.json({ userInfo: req.user });
 });
+
+
+
+// --------------------------------------------------
 
 module.exports = authRoutes;
