@@ -1,12 +1,20 @@
 const express       = require( "express" );
 const mongoose      = require( "mongoose" );
+// const ensureLogin    = require( "connect-ensure-login" );
 const projectRouter = express.Router();
 const Project       = require( "./../models/Project" );
 
 
 
 // --------------------------------------------------
-// ROUTES HERE
+// MIDDLEWARES
+// --------------------------------------------------
+
+// projectRouter.use( ensureLogin.ensureLoggedIn("/") );
+
+
+// --------------------------------------------------
+// ROUTES
 // --------------------------------------------------
 
 
