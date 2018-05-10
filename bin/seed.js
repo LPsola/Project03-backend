@@ -16,6 +16,8 @@ mongoose
 });
 
 const project = [{
+    name: "Dev Day Clone",
+    imageUrl: "https://web-vassets.ea.com/Assets/Richmedia/Image/FullImageLogo/tetris-logo-480x100.png?cb=1334003595",
     githubRepoUrl: "https://github.com/LPsola/Project03-backend",
     trelloBoardId: "5af1b25af3c4381ffb8ec207",
 
@@ -46,6 +48,11 @@ const card = [{
 const user = [{
     username: "example_user",
     password: "example_pw",
+    email: "example@example.com",
+    githubID: "blahgit",
+    currentCards: ["5af33066f972a852e2beeee4"],
+    archivedCards: ["5af33066f972a852e2beeee4"],
+
 }]
 
 

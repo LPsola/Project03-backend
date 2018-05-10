@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const projectSchema = new Schema({
-    githubRepoUrl: { type: String, required: true },
-    trelloBoardId: { type: String, required: true },
-    slackWorkSpaceDirectory: { type: String, required: true },
-    slackUserId: { type: String, required: true },
+    name: { type: String },
+    imageUrl: { type: String },
+    githubRepoUrl: { type: String },
+    trelloBoardId: { type: String },
+    slackWorkSpaceDirectory: { type: String },
+    slackUserId: { type: String },
     contributors: [{
         type: Schema.Types.ObjectId,
         ref: 'User'

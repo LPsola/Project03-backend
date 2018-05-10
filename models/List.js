@@ -4,11 +4,10 @@ const Schema   = mongoose.Schema;
 const listSchema = new Schema({
     projectId: {
         type: Schema.Types.ObjectId,
-        ref: 'Project',
-        required: true
+        ref: 'Project'
     },
-    name: { type: String, required: true },
-    trelloBoardId: { type: String, required: true },
+    name: { type: String },
+    trelloBoardId: { type: String },
 },
 
 {
