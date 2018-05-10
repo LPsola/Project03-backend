@@ -1,18 +1,18 @@
-const express    = require( "express" );
-const mongoose   = require( "mongoose" );
-const Project    = require( "./../models/project-model.js" );
+const express       = require( "express" );
+const mongoose      = require( "mongoose" );
+const projectRouter = express.Router();
+const Project       = require( "./../models/Project" );
 
-const router = express.Router();
+
 
 // --------------------------------------------------
 // ROUTES HERE
 // --------------------------------------------------
 
 
-
 // GET PROJECTS LIST
 // -----------------
-router.get( "projects", ( req, res, next ) => {
+projectRouter.get( "/projects", ( req, res, next ) => {
     Project.find()
         .then(( projects ) => {
             res.json( projects );
@@ -26,11 +26,32 @@ router.get( "projects", ( req, res, next ) => {
 
 // POST NEW PROJECT
 // ----------------
-router.post( "projects", ( req, res, next ) => {
-    const { ownerId, gitHubUrl, trelloBoardId, slackId, slackUserId, usersArray, activityFeed } = req.body;
+projectRouter.post( "/projects", ( req, res, next ) => {
+    const {
+        owner,
+        name,
+        imageUrl,
+        githubRepoUrl,
+        trelloBoardId,
+        slackWorkSpaceDirectory,
+        slackUserId,
+        contributors,
+        activityFeed
+    } = req.body;
 
-    Project.create({ ownerId, gitHubUrl, trelloBoardId, slackId, slackUserId, usersArray, activityFeed })
+    Project.create({
+        owner,
+        name,
+        imageUrl,
+        githubRepoUrl,
+        trelloBoardId,
+        slackWorkSpaceDirectory,
+        slackUserId,
+        contributors,
+        activityFeed
+    })
         .then(( newProject ) => {
+            console.log( req.body );
             res.json( newProject );
         })
         .catch(( err ) => {
@@ -42,7 +63,7 @@ router.post( "projects", ( req, res, next ) => {
 
 // GET ONE PROJECT
 // ---------------
-router.get( "project/:projectId", ( req, res, next ) => {
+projectRouter.get( "/project/:projectId", ( req, res, next ) => {
     if( !mongoose.Types.ObjectId.isValid( req.params.projectId )) {
         next();
         return;
@@ -76,4 +97,4 @@ router.get( "project/:projectId", ( req, res, next ) => {
 
 // --------------------------------------------------
 
-module.exports = router;
+module.exports = projectRouter;

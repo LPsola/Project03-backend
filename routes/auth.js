@@ -83,6 +83,19 @@ authRoutes.post("/signup", (req, res, next) => {
 
 
 
+// LOGIN WITH GITHUB
+// -----------------
+authRoutes.get("/github/login", passport.authenticate("github"));
+authRoutes.get(
+  "/github/success",
+  passport.authenticate("github", {
+    successRedirect: "http://localhost:4200/projects",
+    failureRedirect: "http://localhost:4200/login"
+  })
+);
+
+
+
 // LOGOUT
 // ----------------
 authRoutes.get("/logout", (req, res) => {
@@ -104,5 +117,6 @@ authRoutes.get("/checklogin", (req, res, next) => {
 
 
 // --------------------------------------------------
+
 
 module.exports = authRoutes;
