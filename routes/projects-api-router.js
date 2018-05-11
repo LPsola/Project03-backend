@@ -2,6 +2,7 @@ const express       = require( "express" );
 const mongoose      = require( "mongoose" );
 const projectRouter = express.Router();
 const Project       = require( "./../models/Project" );
+const User          = require( "./../models/User" );
 
 
 
@@ -79,24 +80,20 @@ projectRouter.get( "/project/:projectId", ( req, res, next ) => {
         })
         .catch(( err ) => {
             next( err );
-        })
+        });
 })
 
 
 
 // POST ADD USER TO PROJECT
 // ------------------------
-projectRouter.post( "/invite-contributor/:projectId/:contributorId", ( req, res, next ) => {
-    Project.findByIdAndUpdate( req.params.projectId )
-        .then(( project ) => {
-
-            User.findById( req.params.contributorId )
-                .then(( contributor ) => {
-                    project.contributors.push( contributor._id )
-                    res.json( project );
-                })
-            })
-            
+// 1. search users from the database, according to the info passed in the form
+// 2. if a user matches, res.json
+projectRouter.get( "/invite-contributor/:username", ( req, res, next ) => {
+    User.find({ username: req.params.username })
+        .then(( user ) => {
+          res.json( user );
+        })
         .catch(( err ) => {
             next( err );
         });
