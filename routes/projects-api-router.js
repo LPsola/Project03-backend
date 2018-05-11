@@ -84,6 +84,26 @@ projectRouter.get( "/project/:projectId", ( req, res, next ) => {
 
 
 
+// POST ADD USER TO PROJECT
+// ------------------------
+projectRouter.post( "/invite-contributor/:projectId/:contributorId", ( req, res, next ) => {
+    Project.findByIdAndUpdate( req.params.projectId )
+        .then(( project ) => {
+
+            User.findById( req.params.contributorId )
+                .then(( contributor ) => {
+                    project.contributors.push( contributor._id )
+                    res.json( project );
+                })
+            })
+            
+        .catch(( err ) => {
+            next( err );
+        });
+})
+
+
+
 // PUT ONE PROJECT
 // DELETE ONE PROJECT
 
