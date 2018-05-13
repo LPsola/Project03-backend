@@ -52,7 +52,7 @@ projectRouter.post( "/projects", ( req, res, next ) => {
         activityFeed
     })
         .then(( newProject ) => {
-            console.log( req.body );
+            // console.log( req.body );
             res.json( newProject );
         })
         .catch(( err ) => {
@@ -85,14 +85,41 @@ projectRouter.get( "/project/:projectId", ( req, res, next ) => {
 
 
 
-// POST ADD USER TO PROJECT
-// ------------------------
-// 1. search users from the database, according to the info passed in the form
-// 2. if a user matches, res.json
-projectRouter.get( "/invite-contributor/:username", ( req, res, next ) => {
-    User.find({ username: req.params.username })
+// GET SEARCH USER
+// ---------------
+projectRouter.get( "/search-user/:username", ( req, res, next ) => {
+    User.findOne({ username: req.params.username })
         .then(( user ) => {
           res.json( user );
+        })
+        .catch(( err ) => {
+            next( err );
+        });
+})
+
+
+
+// POST ADD FOUND USER TO PROJECT
+// ------------------------------
+projectRouter.post( "/add-contributor", ( req, res, next ) => {
+
+    const { projectId, userId } = req.body;
+
+    User.findById({ _id: userId })
+        .then(( user ) => {
+
+            console.log( "CONSOLE LOG USER ----------------" );
+            console.log( user );
+            Project.findByIdAndUpdate(
+                { _id: projectId },
+                { $push: { contributors: { _id: userId }}}
+            )
+            .then(( project ) => {
+                
+                console.log( "CONSOLE LOG PROJECT ----------------" );
+                console.log( project );
+                res.json( project );
+            })
         })
         .catch(( err ) => {
             next( err );
