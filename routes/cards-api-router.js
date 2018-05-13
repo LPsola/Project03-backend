@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const projectRouter = express.Router();
-const Card = require("../../models/Card");
+const cardsRouter = express.Router();
+const Card = require("./../models/Card");
 const Project = require("./../models/Project");
-const List = require("../../models/List");
+const List = require("./../models/List");
 const User = require("./../models/User");
 
 // --------------------------------------------------
@@ -12,7 +12,7 @@ const User = require("./../models/User");
 
 // GET Cards LIST
 // -----------------
-projectRouter.get("/:userId/tasks", (req, res, next) => {
+cardsRouter.get("/:userId/tasks", (req, res, next) => {
   Project.find()
     .then(projects => {
       res.json(projects);
@@ -24,7 +24,7 @@ projectRouter.get("/:userId/tasks", (req, res, next) => {
 
 // POST NEW PROJECT
 // ----------------
-projectRouter.post("/projects", (req, res, next) => {
+cardsRouter.post("/projects", (req, res, next) => {
   const {
     owner,
     name,
@@ -59,7 +59,7 @@ projectRouter.post("/projects", (req, res, next) => {
 
 // GET ONE PROJECT
 // ---------------
-projectRouter.get("/project/:projectId", (req, res, next) => {
+cardsRouter.get("/project/:projectId", (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.projectId)) {
     next();
     return;
@@ -82,7 +82,7 @@ projectRouter.get("/project/:projectId", (req, res, next) => {
 // ------------------------
 // 1. search users from the database, according to the info passed in the form
 // 2. if a user matches, res.json
-projectRouter.get("/invite-contributor/:username", (req, res, next) => {
+cardsRouter.get("/invite-contributor/:username", (req, res, next) => {
   User.find({ username: req.params.username })
     .then(user => {
       res.json(user);
@@ -97,4 +97,4 @@ projectRouter.get("/invite-contributor/:username", (req, res, next) => {
 
 // --------------------------------------------------
 
-module.exports = projectRouter;
+module.exports = cardsRouter;
