@@ -149,29 +149,6 @@ projectRouter.post( "/add-contributor", ( req, res, next ) => {
 })
 
 
-// OLD WORKING VERSION
-// projectRouter.post( "/add-contributor", ( req, res, next ) => {
-
-//     const { projectId, userId } = req.body;
-
-//     User.findById({ _id: userId })
-//         .then(( user ) => {
-
-//             Project.findByIdAndUpdate(
-//                 { _id: projectId },
-//                 { $push: { contributors: { _id: userId }}}
-//             )
-//             .then(( project ) => {
-                
-//                 res.json( project );
-//             })
-//         })
-//         .catch(( err ) => {
-//             next( err );
-//         });
-// })
-
-
 
 // PUT ONE PROJECT
 // DELETE ONE PROJECT
