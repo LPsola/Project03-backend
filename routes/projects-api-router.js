@@ -108,23 +108,68 @@ projectRouter.post( "/add-contributor", ( req, res, next ) => {
     User.findById({ _id: userId })
         .then(( user ) => {
 
-            console.log( "CONSOLE LOG USER ----------------" );
-            console.log( user );
-            Project.findByIdAndUpdate(
-                { _id: projectId },
-                { $push: { contributors: { _id: userId }}}
-            )
-            .then(( project ) => {
-                
-                console.log( "CONSOLE LOG PROJECT ----------------" );
-                console.log( project );
-                res.json( project );
-            })
+            Project.findById( projectId )
+                .then(( project ) => {
+
+                    let stringedContributors = [];
+                    let stringedUserId = user._id.toString();
+                    
+                    project.contributors.forEach(( contributor ) => {
+                        stringedContributors.push( contributor.toString() );
+                    });
+                    
+                    // console.log( "PROJECT CONTRIBUTORS CONSOLE LOG ------------------------" );
+                    // console.log( typeof project.contributors[1] );
+                    // console.log( typeof stringedContributors[1] );
+                    // console.log( "USER._ID CONSOLE LOG ------------------------" );
+                    // console.log( typeof user._id );
+                    // console.log( typeof stringedUserId );
+                    // console.log( "USER._ID IS IN CONTRIBUTORS LOG ------------------------" );
+                    // console.log( project.contributors.includes( user._id ) );
+                    // console.log( stringedContributors.includes( stringedUserId ) );
+
+                    if( stringedContributors.includes( stringedUserId )) {
+                        res.json( project );
+                    }
+                    else {
+                        Project.findByIdAndUpdate(
+                            { _id: projectId },
+                            { $push: { contributors: { _id: userId }}}
+                        )
+                    .then(( project ) => {
+                        
+                        res.json( project );
+                    })
+                    }
+                })
         })
         .catch(( err ) => {
             next( err );
         });
 })
+
+
+// OLD WORKING VERSION
+// projectRouter.post( "/add-contributor", ( req, res, next ) => {
+
+//     const { projectId, userId } = req.body;
+
+//     User.findById({ _id: userId })
+//         .then(( user ) => {
+
+//             Project.findByIdAndUpdate(
+//                 { _id: projectId },
+//                 { $push: { contributors: { _id: userId }}}
+//             )
+//             .then(( project ) => {
+                
+//                 res.json( project );
+//             })
+//         })
+//         .catch(( err ) => {
+//             next( err );
+//         });
+// })
 
 
 
