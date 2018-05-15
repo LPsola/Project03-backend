@@ -1,10 +1,11 @@
-const mongoose = require('mongoose');
-const Schema   = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const projectSchema = new Schema({
+const projectSchema = new Schema(
+  {
     owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: "User"
     },
     name: { type: String },
     imageUrl: { type: String },
@@ -12,18 +13,22 @@ const projectSchema = new Schema({
     trelloBoardId: { type: String },
     slackWorkSpaceDirectory: { type: String },
     slackUserId: { type: String },
-    contributors: [{
+    contributors: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    activityFeed: [{type: String}],
-}, {
+        ref: "User"
+      }
+    ],
+    activityFeed: [{ type: String }]
+  },
+  {
     timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
+      createdAt: "created_at",
+      updatedAt: "updated_at"
     }
-});
+  }
+);
 
-const Project = mongoose.model('Project', projectSchema);
+const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;

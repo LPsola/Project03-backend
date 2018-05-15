@@ -84,6 +84,52 @@ cardsRouter.get("/project/:projectId/:listId/cards", (req, res, next) => {
     });
 });
 
+// GET USER CURRENT TASKS
+// ---------------
+cardsRouter.get("/:username/current-tasks", (req, res, next) => {
+  User.findOne({ username: req.params.username })
+    .then(user => {
+      res.json(user);
+      Card.find().then(cards => {
+        res.json(cards);
+      });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+//   // POST USER CURRENT TASKS
+// // ------------------------------
+cardsRouter.post("/update-current", (req, res, next) => {
+  const { cardName, userId } = req.body;
+  console.log(cardName);
+  User.findById({ _id: userId })
+    .then(user => {
+      console.log("user: " + user);
+      Card.find().then(cards => {
+        console.log("cards: " + cards);
+        cards.forEach(card => {
+          if (card.name === cardName) {
+            card.contributors.push(userId);
+            user.currentCards.push(card);
+            res.json({ card, user });
+            // res.json(user);
+            console.log("blah: " + card);
+            console.log("bloh: " + user);
+          }
+        });
+      });
+    })
+    //     Card.findOne(cardName).then(card => {
+    //       res.json(card);
+    //     });
+    //   })
+    .catch(err => {
+      next(err);
+    });
+});
+
 // // POST NEW PROJECT
 // // ----------------
 // cardsRouter.post("/projects", (req, res, next) => {
