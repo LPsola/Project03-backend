@@ -64,7 +64,7 @@ projectRouter.post( "/projects", ( req, res, next ) => {
 
 // GET ONE PROJECT
 // ---------------
-projectRouter.get( "/project/:projectId", ( req, res, next ) => {
+projectRouter.get( "/project/:projectId/:currentUserId", ( req, res, next ) => {
     if( !mongoose.Types.ObjectId.isValid( req.params.projectId )) {
         next();
         return;
@@ -76,6 +76,7 @@ projectRouter.get( "/project/:projectId", ( req, res, next ) => {
                 next();
                 return;
             }
+            if( !project.contributors.includes( req.params.currentUserId ))
             res.json( project );
         })
         .catch(( err ) => {
