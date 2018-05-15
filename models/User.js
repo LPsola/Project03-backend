@@ -7,13 +7,12 @@ const userSchema = new Schema(
     password: { type: String },
     email: { type: String },
     githubID: { type: String },
-    currentCards: { type: Object },
-    archivedCards: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "archivedCards"
-      }
-    ]
+    currentCards: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Cards'}],
+    archivedCards: [{ 
+      type: Schema.Types.ObjectId,
+      ref: 'Cards'}],
   },
   {
     timestamps: {
