@@ -83,7 +83,20 @@ projectRouter.get( "/project/:projectId", ( req, res, next ) => {
         });
 })
 
+projectRouter.get("/all-users", (req,res,next) =>{
+    User.find()
+        .then(( users ) => {
+            const usernameArr = {}
+            users.forEach(elem =>{
+                usernameArr[elem.username] = ""
+            })
+            res.json( usernameArr );
+        })
+        .catch(( err ) => {
+            next( err );
+        });
 
+})
 
 // GET SEARCH USER
 // ---------------
