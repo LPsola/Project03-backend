@@ -89,7 +89,7 @@ authRoutes.get("/github/login", passport.authenticate("github"));
 authRoutes.get(
   "/github/success",
   passport.authenticate("github", {
-    successRedirect: `${process.env.localH}/projects`,
+    successRedirect: `${process.env.localH}/boards`,
     failureRedirect: `${process.env.localH}/login`
   })
 );
