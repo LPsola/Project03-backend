@@ -19,8 +19,8 @@ const cardSchema = new Schema(
       }
     ],
     taskDuration: {
-      type: String,
-      enum: ["1 hour", "2 hour", "3 hour", "half day", "full day"]
+      type: Number,
+      enum: [1, 2, 3, 4, 8]
     }
   },
 
