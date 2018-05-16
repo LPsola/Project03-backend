@@ -7,6 +7,7 @@ const userSchema = new Schema(
     password: { type: String },
     email: { type: String },
     githubID: { type: String },
+    githubAvatar_url: {type: String},
     currentCards: [{
       type: Schema.Types.ObjectId,
       ref: 'Cards'}],
