@@ -125,22 +125,13 @@ projectRouter.post( "/add-contributor", ( req, res, next ) => {
             Project.findById( projectId )
                 .then(( project ) => {
 
+                    // Couldn't compare the contributors and the IDs, so I had to string them
                     let stringedContributors = [];
                     let stringedUserId = user._id.toString();
                     
                     project.contributors.forEach(( contributor ) => {
                         stringedContributors.push( contributor.toString() );
                     });
-                    
-                    // console.log( "PROJECT CONTRIBUTORS CONSOLE LOG ------------------------" );
-                    // console.log( typeof project.contributors[1] );
-                    // console.log( typeof stringedContributors[1] );
-                    // console.log( "USER._ID CONSOLE LOG ------------------------" );
-                    // console.log( typeof user._id );
-                    // console.log( typeof stringedUserId );
-                    // console.log( "USER._ID IS IN CONTRIBUTORS LOG ------------------------" );
-                    // console.log( project.contributors.includes( user._id ) );
-                    // console.log( stringedContributors.includes( stringedUserId ) );
 
                     if( stringedContributors.includes( stringedUserId )) {
                         res.json( project );
