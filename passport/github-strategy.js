@@ -12,10 +12,10 @@ passport.use(
       proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log("GITHUB profile -------------");
-      console.log(profile);
+      // console.log("GITHUB profile -------------");
+      // console.log(profile);
 
-      const { id, username, displayName, emails } = profile;
+      const { id, username, displayName, emails, _json } = profile;
 
       User.findOne({ githubID: id })
         .then(userDetails => {
@@ -23,10 +23,10 @@ passport.use(
             done(null, userDetails);
             return;
           }
-
           return User.create({
             githubID: id,
             username: username || displayName,
+            githubAvatar_url: _json.avatar_url,
             email: emails ? emails[0].value : `${username}@github.com`
           }).then(newUser => {
             done(null, newUser);
