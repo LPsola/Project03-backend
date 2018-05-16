@@ -89,8 +89,8 @@ authRoutes.get("/github/login", passport.authenticate("github"));
 authRoutes.get(
   "/github/success",
   passport.authenticate("github", {
-    successRedirect: "http://localhost:4200/projects",
-    failureRedirect: "http://localhost:4200/login"
+    successRedirect: `${process.env.localH}/boards`,
+    failureRedirect: `${process.env.localH}/login`
   })
 );
 
