@@ -7,13 +7,9 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
-
-
 // --------------------------------------------------
 // ROUTES HERE
 // --------------------------------------------------
-
-
 
 // LOGIN
 // ----------------
@@ -37,8 +33,6 @@ authRoutes.post("/login", (req, res, next) => {
   });
   myFunction(req, res, next);
 });
-
-
 
 // SIGNUP
 // ----------------
@@ -81,20 +75,16 @@ authRoutes.post("/signup", (req, res, next) => {
   });
 });
 
-
-
 // LOGIN WITH GITHUB
 // -----------------
 authRoutes.get("/github/login", passport.authenticate("github"));
 authRoutes.get(
   "/github/success",
   passport.authenticate("github", {
-    successRedirect: `${process.env.localH}/boards`,
+    successRedirect: `${process.env.localH}/projects`,
     failureRedirect: `${process.env.localH}/login`
   })
 );
-
-
 
 // LOGOUT
 // ----------------
@@ -102,8 +92,6 @@ authRoutes.get("/logout", (req, res) => {
   req.logout();
   res.json({ userInfo: null });
 });
-
-
 
 // CHECK LOGIN
 // ----------------
@@ -114,9 +102,6 @@ authRoutes.get("/checklogin", (req, res, next) => {
   res.json({ userInfo: req.user });
 });
 
-
-
 // --------------------------------------------------
-
 
 module.exports = authRoutes;

@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.github_id,
       clientSecret: process.env.github_secret,
-      callbackURL: "/api/github/success",
+      callbackURL: `/api/github/success`,
       proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
