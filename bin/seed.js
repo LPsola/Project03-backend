@@ -20,12 +20,9 @@ const project = [
     name: "Dev Day Clone",
     imageUrl:
       "https://web-vassets.ea.com/Assets/Richmedia/Image/FullImageLogo/tetris-logo-480x100.png?cb=1334003595",
-    githubRepoUrl: "https://github.com/LPsola/Project03-backend",
+    githubRepoName: "https://github.com/LPsola/Project03-backend",
     trelloBoardId: "5af1b25af3c4381ffb8ec207",
 
-    //see what fields are needed for slack API
-    slackWorkSpaceDirectory: "blah",
-    slackUserId: "blah",
     contributors: ["5af32fb0e87fde5218ef910f"],
     activityFeed: ["wireframe done"],
     owner: "5af32fb0e87fde5218ef910f"

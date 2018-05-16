@@ -32,10 +32,8 @@ projectRouter.post( "/projects", ( req, res, next ) => {
         owner,
         name,
         imageUrl,
-        githubRepoUrl,
+        githubRepoName,
         trelloBoardId,
-        slackWorkSpaceDirectory,
-        slackUserId,
         contributors,
         activityFeed
     } = req.body;
@@ -44,10 +42,8 @@ projectRouter.post( "/projects", ( req, res, next ) => {
         owner,
         name,
         imageUrl,
-        githubRepoUrl,
+        githubRepoName,
         trelloBoardId,
-        slackWorkSpaceDirectory,
-        slackUserId,
         contributors,
         activityFeed
     })

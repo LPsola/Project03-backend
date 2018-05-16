@@ -8,10 +8,8 @@ const projectSchema = new Schema({
     },
     name: { type: String },
     imageUrl: { type: String },
-    githubRepoUrl: { type: String },
+    githubRepoName: { type: String },
     trelloBoardId: { type: String },
-    slackWorkSpaceDirectory: { type: String },
-    slackUserId: { type: String },
     contributors: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
