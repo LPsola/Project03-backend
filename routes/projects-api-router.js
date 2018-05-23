@@ -15,12 +15,12 @@ const User          = require( "./../models/User" );
 // -----------------
 projectRouter.get( "/projects", ( req, res, next ) => {
     Project.find()
-        .then(( projects ) => {
-            res.json( projects );
-        })
-        .catch(( err ) => {
-            next( err );
-        });
+    .then(( projects ) => {
+        res.json( projects );
+    })
+    .catch(( err ) => {
+        next( err );
+    });
 });
 
 
@@ -29,55 +29,46 @@ projectRouter.get( "/projects", ( req, res, next ) => {
 // ----------------
 projectRouter.post( "/projects", ( req, res, next ) => {
     const {
-        owner,
-        name,
-        imageUrl,
-        githubRepoName,
+        githubRepoUrl,
         trelloBoardId,
-        contributors,
-        activityFeed
     } = req.body;
-
+    Project.findOneAndRemove({ trelloBoardId : trelloBoardId})
+    .then(()=>
     Project.create({
-        owner,
-        name,
-        imageUrl,
-        githubRepoName,
+        githubRepoUrl,
         trelloBoardId,
-        contributors,
-        activityFeed
     })
-        .then(( newProject ) => {
-            // console.log( req.body );
-            res.json( newProject );
-        })
-        .catch(( err ) => {
-            next( err );
-        });
+    .then(( newProject ) => {
+        res.json( newProject );
+    })
+)
+.catch(( err ) => {
+    next( err );
+});
 });
 
 
 
 // GET ONE PROJECT
 // ---------------
-projectRouter.get( "/project/:projectId/:currentUserId", ( req, res, next ) => {
-    if( !mongoose.Types.ObjectId.isValid( req.params.projectId )) {
-        next();
-        return;
-    }
-
-    Project.findById( req.params.projectId )
-        .then(( project ) => {
-            if( !project ) {
-                next();
-                return;
-            }
-            if( !project.contributors.includes( req.params.currentUserId ))
-            res.json( project );
-        })
-        .catch(( err ) => {
-            next( err );
-        });
+projectRouter.get( "/project/:trelloboardId/", ( req, res, next ) => {
+    // if( !mongoose.Types.ObjectId.isValid( req.params.projectId )) {
+    //     next();
+    //     return;
+    // }
+    
+    Project.findOne( { trelloBoardId : req.params.trelloboardId} )    
+    .then(( project ) => {
+        if( !project ) {
+            res.json( { exists: false} );
+            return;
+        }
+        res.json( project );
+    })
+    .catch(( err ) => {
+        console.log("found project err", project)
+        next( err );
+    });
 })
 
 
@@ -86,12 +77,12 @@ projectRouter.get( "/project/:projectId/:currentUserId", ( req, res, next ) => {
 // ---------------
 projectRouter.get( "/search-user/:username", ( req, res, next ) => {
     User.findOne({ username: req.params.username })
-        .then(( user ) => {
-          res.json( user );
-        })
-        .catch(( err ) => {
-            next( err );
-        });
+    .then(( user ) => {
+        res.json( user );
+    })
+    .catch(( err ) => {
+        next( err );
+    });
 })
 
 
@@ -99,41 +90,41 @@ projectRouter.get( "/search-user/:username", ( req, res, next ) => {
 // POST ADD FOUND USER TO PROJECT
 // ------------------------------
 projectRouter.post( "/add-contributor", ( req, res, next ) => {
-
+    
     const { projectId, userId } = req.body;
-
+    
     User.findById({ _id: userId })
-        .then(( user ) => {
-
-            Project.findById( projectId )
+    .then(( user ) => {
+        
+        Project.findById( projectId )
+        .then(( project ) => {
+            
+            // Couldn't compare the contributors and the IDs, so I had to string them
+            let stringedContributors = [];
+            let stringedUserId = user._id.toString();
+            
+            project.contributors.forEach(( contributor ) => {
+                stringedContributors.push( contributor.toString() );
+            });
+            
+            if( stringedContributors.includes( stringedUserId )) {
+                res.json( project );
+            }
+            else {
+                Project.findByIdAndUpdate(
+                    { _id: projectId },
+                    { $push: { contributors: { _id: userId }}}
+                )
                 .then(( project ) => {
-
-                    // Couldn't compare the contributors and the IDs, so I had to string them
-                    let stringedContributors = [];
-                    let stringedUserId = user._id.toString();
                     
-                    project.contributors.forEach(( contributor ) => {
-                        stringedContributors.push( contributor.toString() );
-                    });
-
-                    if( stringedContributors.includes( stringedUserId )) {
-                        res.json( project );
-                    }
-                    else {
-                        Project.findByIdAndUpdate(
-                            { _id: projectId },
-                            { $push: { contributors: { _id: userId }}}
-                        )
-                    .then(( project ) => {
-                        
-                        res.json( project );
-                    })
-                    }
+                    res.json( project );
                 })
+            }
         })
-        .catch(( err ) => {
-            next( err );
-        });
+    })
+    .catch(( err ) => {
+        next( err );
+    });
 })
 
 

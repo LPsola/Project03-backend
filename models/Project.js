@@ -2,19 +2,12 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const projectSchema = new Schema({
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    name: { type: String },
-    imageUrl: { type: String },
-    githubRepoName: { type: String },
+    // owner: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User'
+    // },
+    githubRepoUrl: { type: String },
     trelloBoardId: { type: String },
-    contributors: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    activityFeed: [{type: String}],
 }, {
     timestamps: {
         createdAt: 'created_at',
